@@ -1,0 +1,37 @@
+{:source-paths
+ ["src/main"]
+
+ :dependencies
+ [[garden "1.3.10"]
+  [org.mentat/emmy "0.31.0"]]
+
+ :builds
+ {:main
+  {:target :esm
+
+   :output-dir "out/js"
+
+   :modules
+   {:base {:entries []}
+
+   	:util
+   	{:exports {typescale util.scale/typescale}
+   	 :depends-on #{:base}}
+
+  	 :css
+  	 {:exports {style css.h1/style}
+  	  :depends-on #{:base :util}}}
+
+   :js-options
+   {:js-provider :import
+   	; fraction.js doesn't export ./bigdecimal.js.
+   	:ignore-exports true}
+
+   	:build-hooks
+   	[(build.hooks/write-css
+   	  {:output-dir "out/css"
+
+   	   :files
+   	   {:h1
+   	    {:vals
+   	     [css.h1/style]}}})]}}}
